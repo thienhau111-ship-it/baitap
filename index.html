@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<title>中文作業</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:"LXGW WenKai TC","Kaiti TC","BiauKai","DFKai-SB","標楷體","Noto Serif TC",serif;
+    --bg:#f1f4f9; --card:#ffffff; --ink:#1a2333; --muted:#5d6878; --line:#d9e1ec;
+    --navy:#14305a; --accent:#1f4e8c; --accent-2:#5b8fd0; --accent-ink:#ffffff; --soft:#e8eff9;
+    --ok:#2f7d4f; --ok-soft:#e6f3ea; --warn:#9a6200; --warn-soft:#fff3d6; --danger:#b3261e; --radius:12px;
+    --serif:Georgia,"Noto Serif TC","PMingLiU","Times New Roman",serif;
+    --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Segoe UI",Roboto,"Noto Sans",var(--zh),sans-serif;}
+  .wrap{max-width:720px;margin:0 auto;padding:16px 16px 120px}
+  .mast{background:var(--navy);color:#fff;border-bottom:3px solid var(--accent-2)}
+  header{padding:16px;max-width:720px;margin:0 auto}
+  header h1{margin:0;font:700 30px/1.2 var(--brand);letter-spacing:4px}
+  header p{margin:3px 0 0;color:#c4d3ea;font-size:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:14px 0;box-shadow:0 1px 2px rgba(20,48,90,.05)}
+  h2{font:600 18px/1.35 var(--serif);color:var(--navy);margin:0 0 8px}
+  .deadline{display:inline-block;font-size:14px;color:var(--accent);background:var(--soft);border-radius:8px;padding:3px 10px;margin-top:4px}
+  .counter{margin:10px 0 4px;padding:10px 12px;border-radius:10px;background:var(--warn-soft);color:var(--warn)}
+  .counter.ok{background:var(--ok-soft);color:var(--ok)}
+  .counter .num{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+  .counter .track{height:6px;border-radius:99px;background:rgba(0,0,0,.08);margin-top:6px;overflow:hidden}
+  .counter .fill{height:100%;background:currentColor;border-radius:99px;transition:width .2s}
+  .done-tag{display:inline-block;margin-top:4px;font-size:13px;font-weight:600;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:2px 10px}
+  #barCount{display:block;font-weight:600;color:var(--warn)}
+  #barCount.ok{color:var(--ok)}
+  .ws{display:flex;gap:8px}
+  .ws input:first-child{flex:0 0 110px}
+  .ws input:last-child{flex:1;min-width:0}
+  label.lbl{display:block;font-weight:600;margin:12px 0 6px}
+  input[type=text],textarea{width:100%;font:inherit;font-family:var(--zh),inherit;font-size:17px;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+  input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
+  textarea{min-height:90px;resize:vertical}
+  textarea.essay{min-height:260px;line-height:1.8}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:999px;padding:12px 20px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .asg{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;margin:8px 0;font:inherit;cursor:pointer}
+  .asg:hover{border-color:var(--accent)}
+  .asg small{color:var(--muted)}
+  .muted{color:var(--muted)} .small{font-size:14px}
+  .intro{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:15px}
+  .item{margin:14px 0 4px}
+  .item .q{font-weight:600}
+  .tag{display:inline-block;font-family:var(--zh);font-weight:700;background:var(--soft);color:var(--accent);border-radius:8px;padding:1px 8px;margin-right:6px}
+  .hint{color:var(--muted);font-size:14px}
+  .example{border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;background:#f6f9fd;border-radius:0 8px 8px 0;font-size:15px}
+  .zh{font-family:var(--zh)}
+  .instr ol{margin:6px 0;padding-left:22px} .instr p{margin:6px 0}
+  details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fbfcfe}
+  details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+  details table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+  details th,details td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;font-family:var(--zh),inherit}
+  details th{background:#e8eff9;color:var(--navy)}
+  .topics label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;margin:6px 0;cursor:pointer}
+  .topics input{margin-top:4px}
+  .checks label{display:flex;gap:8px;align-items:center;margin:4px 0}
+  .meter{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pill{font-size:13px;border-radius:999px;padding:3px 10px;background:#eef1f5;color:var(--muted)}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+  .bar .in{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .modal{position:fixed;inset:0;background:rgba(20,20,20,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal .box{background:#fff;border-radius:16px;padding:18px;max-width:440px;width:100%}
+  .modal ul{padding-left:20px;margin:8px 0}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+  .err{color:var(--danger);font-weight:600}
+  .center{text-align:center}
+  .big{font-size:44px;line-height:1}
+  .hidden{display:none!important}
+  .spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite;display:inline-block;vertical-align:middle}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="mast"><header>
+  <h1>中文作業</h1>
+  <p id="sub">Làm bài và nộp ngay trên điện thoại</p>
+</header></div>
+<div class="wrap">
+
+  <!-- Màn hình 1: tên + chọn bài -->
+  <section id="vHome">
+    <div class="card">
+      <label class="lbl" for="name">Tên tiếng Trung của bạn</label>
+      <input id="name" type="text" class="zh" placeholder="例如：陳月美" maxlength="30" autocomplete="off">
+      <p class="hint">Gõ đúng tên tiếng Trung, lần sau nộp bài khác cũng gõ giống hệt như vậy.</p>
+    </div>
+    <div class="card">
+      <h2>Chọn bài tập</h2>
+      <div id="asgList"><span class="spinner"></span> <span class="muted">Đang tải…</span></div>
+    </div>
+  </section>
+
+  <!-- Màn hình 2: làm bài -->
+  <section id="vWork" class="hidden">
+    <button class="btn ghost" id="back" type="button">← Chọn bài khác</button>
+    <div id="form"></div>
+  </section>
+
+  <!-- Màn hình 3: đã nộp -->
+  <section id="vDone" class="hidden">
+    <div class="card center">
+      <div class="big">✓</div>
+      <h2 id="doneTitle">Đã nộp bài</h2>
+      <p id="doneText" class="muted"></p>
+      <button class="btn ghost" id="doneBack" type="button">Về trang chọn bài</button>
+    </div>
+  </section>
+</div>
+
+<div class="bar hidden" id="bar">
+  <div class="in">
+    <span class="small muted"><span id="barCount" class="hidden"></span><span id="saveState">Bài làm tự lưu trên máy này</span></span>
+    <button class="btn" id="submitBtn" type="button">Nộp bài</button>
+  </div>
+</div>
+
+<div class="modal hidden" id="modal"><div class="box" id="modalBox"></div></div>
+
+<script>
+var state = { asg: null, answers: {} };
+var CJK = /[㐀-鿿豈-﫿]/g;
+
+function $(id){ return document.getElementById(id); }
+function el(tag, attrs, kids){
+  var e = document.createElement(tag);
+  if (attrs) Object.keys(attrs).forEach(function(k){
+    if (k === 'text') e.textContent = attrs[k];
+    else if (k === 'html') e.innerHTML = attrs[k];
+    else if (k === 'cls') e.className = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  });
+  (kids || []).forEach(function(c){ if (c) e.appendChild(c); });
+  return e;
+}
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(e){ return null; } }
+/* Link ứng dụng web Google Apps Script (kết thúc bằng /exec). */
+var API_URL = 'https://script.google.com/macros/s/AKfycbymAWR4KKSw85EuveT87cVmqYRevrIdrY7ozV1jr4jJDMTuVa8FOSfbUQWA3OhQasyF/exec';
+function call(fn){
+  var args = Array.prototype.slice.call(arguments, 1);
+  return fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify({fn: fn, args: args}),
+    redirect: 'follow',
+    credentials: 'omit'
+  }).then(function(r){
+    if (!r.ok) throw new Error('Máy chủ đang bận (mã ' + r.status + '). Hãy thử lại sau ít phút.');
+    return r.json();
+  }, function(){
+    throw new Error('Không kết nối được máy chủ. Hãy kiểm tra mạng rồi thử lại.');
+  }).then(function(res){
+    if (!res || !res.ok) throw new Error((res && res.error) || 'Có lỗi xảy ra.');
+    return res.data;
+  });
+}
+function errMsg(e){ return (e && e.message) ? e.message.replace(/^Exception:\s*/, '') : String(e); }
+function show(v){ ['vHome','vWork','vDone'].forEach(function(x){ $(x).classList.toggle('hidden', x !== v); }); $('bar').classList.toggle('hidden', v !== 'vWork'); window.scrollTo(0,0); }
+function countCJK(s){ return (String(s || '').match(CJK) || []).length; }
+function fmtTime(iso){ var d = new Date(iso); return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+' ngày '+('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2); }
+function remain(iso){
+  var ms = new Date(iso) - new Date();
+  if (ms <= 0) return 'đã hết giờ';
+  var m = Math.floor(ms / 60000), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
+  if (d) return 'còn ' + d + ' ngày ' + h + ' giờ';
+  if (h) return 'còn ' + h + ' giờ ' + mm + ' phút';
+  return 'còn ' + mm + ' phút';
+}
+function deadlineText(iso){ return iso ? 'Hạn nộp: ' + fmtTime(iso) + ' (' + remain(iso) + ')' : ''; }
+
+/* ---------- Trang chủ ---------- */
+$('name').value = store('hw_name') || '';
+var nameTimer;
+$('name').addEventListener('input', function(){
+  store('hw_name', $('name').value.trim());
+  clearTimeout(nameTimer); nameTimer = setTimeout(loadList, 700);
+});
+
+function loadList(){
+  call('getOpenAssignments', $('name').value.trim()).then(function(list){
+    var box = $('asgList'); box.innerHTML = '';
+    if (!list.length){ box.appendChild(el('p', {cls:'muted', text:'Hiện chưa có bài tập nào đang mở.'})); return; }
+    list.forEach(function(a){
+      var hasDraft = !a.submittedAt && !!store('draft:' + a.id);
+      var b = el('button', {cls:'asg', type:'button'}, [
+        el('div', {text: a.title}),
+        a.until ? el('small', {text: deadlineText(a.until)}) : null,
+        a.until && hasDraft ? el('br') : null,
+        hasDraft ? el('small', {text:'Bạn đang có bài làm dở'}) : null,
+        a.submittedAt ? el('div', null, [el('span', {cls:'done-tag', text:'✓ Đã nộp lúc ' + fmtTime(a.submittedAt)})]) : null
+      ]);
+      b.addEventListener('click', function(){ openAsg(a.id); });
+      box.appendChild(b);
+    });
+  }).catch(function(e){ $('asgList').innerHTML = ''; $('asgList').appendChild(el('p', {cls:'err', text:'Không tải được danh sách: ' + errMsg(e)})); });
+}
+
+function openAsg(id){
+  if (!$('name').value.trim()){ $('name').focus(); alert('Bạn hãy nhập tên tiếng Trung trước.'); return; }
+  $('form').innerHTML = '<div class="card"><span class="spinner"></span> Đang mở bài tập…</div>';
+  show('vWork'); $('bar').classList.add('hidden');
+  Promise.all([call('getAssignment', id), call('checkSubmitted', id, $('name').value.trim())]).then(function(r){
+    state.asg = r[0];
+    try { state.answers = JSON.parse(store('draft:' + id) || '{}') || {}; } catch(e){ state.answers = {}; }
+    if (r[1].submitted) renderAlready(r[1].at); else startWork();
+  }).catch(function(e){ $('form').innerHTML = ''; $('form').appendChild(el('div', {cls:'card err', text: errMsg(e)})); });
+}
+
+function startWork(){ $('bar').classList.remove('hidden'); render(); window.scrollTo(0,0); }
+
+/* Đã nộp rồi: báo cho sinh viên, cho phép làm lại (bài nộp trước sẽ bị xóa). */
+function renderAlready(at){
+  var a = state.asg, f = $('form'), name = $('name').value.trim();
+  f.innerHTML = '';
+  var redo = el('button', {cls:'btn', type:'button', text:'Làm bài lại'});
+  var home = el('button', {cls:'btn ghost', type:'button', text:'Về trang chọn bài'});
+  home.addEventListener('click', function(){ show('vHome'); loadList(); });
+  redo.addEventListener('click', function(){
+    modal('<h2>Làm bài lại?</h2><p>Bài bạn đã nộp lúc <b>' + esc(fmtTime(at)) + '</b> sẽ <b>bị xóa</b>. Sau khi làm xong, bạn cần bấm <b>Nộp bài</b> lại.</p>' +
+      (Object.keys(state.answers).length ? '<p class="small muted">Bài làm lần trước vẫn còn trên máy này, bạn có thể sửa tiếp từ đó.</p>' : ''),
+      [{text:'Không', ghost:true, on: closeModal}, {text:'Xóa bài cũ và làm lại', on: function(){
+        $('modalBox').innerHTML = '<p><span class="spinner"></span> Đang xóa bài cũ…</p>';
+        call('deleteMySubmission', a.id, name).then(function(){ closeModal(); startWork(); })
+          .catch(function(e){ modal('<h2>Chưa xóa được</h2><p class="err">' + esc(errMsg(e)) + '</p>', [{text:'Đóng', on: closeModal}]); });
+      }}]);
+  });
+  f.appendChild(el('div', {cls:'card center'}, [
+    el('div', {cls:'big', text:'✓'}),
+    el('h2', {text:'Bạn đã nộp bài này rồi'}),
+    el('p', {cls:'zh', text: name + ' · ' + a.title}),
+    el('p', {cls:'muted', text:'Nộp lúc ' + fmtTime(at) + '.'}),
+    el('div', {cls:'actions', style:'justify-content:center'}, [home, redo])
+  ]));
+}
+
+/* ---------- Làm bài ---------- */
+var saveTimer;
+function saveDraft(){
+  clearTimeout(saveTimer);
+  $('saveState').textContent = 'Đang lưu nháp…';
+  saveTimer = setTimeout(function(){
+    store('draft:' + state.asg.id, JSON.stringify(state.answers));
+    $('saveState').textContent = 'Đã lưu nháp trên máy này';
+  }, 400);
+}
+
+function render(){
+  var a = state.asg, f = $('form');
+  f.innerHTML = '';
+  f.appendChild(el('div', {cls:'card'}, [
+    el('h2', {text: a.title}),
+    a.until ? el('div', {cls:'deadline', id:'deadline', text: deadlineText(a.until)}) : null
+  ]));
+  (a.sections || []).forEach(function(s){
+    f.appendChild(s.type === 'essay' ? renderEssay(s) : renderSection(s));
+  });
+}
+
+function renderSection(s){
+  var c = el('div', {cls:'card'}, [el('h2', {text: s.title})]);
+  if (s.instructions) c.appendChild(el('div', {cls:'instr small', html: s.instructions}));
+  if (s.example) c.appendChild(el('div', {cls:'example'}, [
+    el('div', {text: 'Ví dụ: ' + s.example.q}), el('div', {cls:'zh', text: '→ ' + s.example.a})
+  ]));
+  (s.items || []).forEach(function(it, i){
+    var head = el('div', {cls:'q'}, [
+      it.label ? el('span', {cls:'tag', text: it.label}) : null,
+      document.createTextNode(((s.items.length > 1 && !it.label) ? (i + 1) + '. ' : '') + (it.prompt || ''))
+    ]);
+    var box = el('div', {cls:'item'}, [head, it.hint ? el('div', {cls:'hint', text: it.hint}) : null]);
+    if (it.type === 'word_sentence'){
+      var v = state.answers[it.id] || {};
+      var w = el('input', {type:'text', cls:'zh', placeholder:'Từ', maxlength:'10'}); w.value = v.word || '';
+      var sn = el('input', {type:'text', cls:'zh', placeholder:'Câu của bạn'}); sn.value = v.sentence || '';
+      var upd = function(){ state.answers[it.id] = {word: w.value, sentence: sn.value}; saveDraft(); };
+      w.addEventListener('input', upd); sn.addEventListener('input', upd);
+      var ws = el('div', {cls:'ws'}, [w, sn]); ws.style.marginTop = '6px';
+      box.appendChild(ws);
+    } else {
+      var inp = it.type === 'textarea' ? el('textarea', {cls:'zh'}) : el('input', {type:'text', cls:'zh'});
+      if (it.placeholder) inp.placeholder = it.placeholder;
+      inp.value = state.answers[it.id] || '';
+      inp.addEventListener('input', function(){ state.answers[it.id] = inp.value; saveDraft(); });
+      box.appendChild(inp);
+    }
+    c.appendChild(box);
+  });
+  return c;
+}
+
+function renderEssay(s){
+  var v = state.answers[s.id] || {topic:'', text:'', checklist:[]};
+  state.answers[s.id] = v;
+  var c = el('div', {cls:'card'}, [el('h2', {text: s.title})]);
+  if (s.instructions) c.appendChild(el('div', {cls:'instr small', html: s.instructions}));
+
+  if (s.topics && s.topics.length){
+    var t = el('div', {cls:'topics'}, [el('div', {cls:'lbl', text:'Chọn chủ đề'})]);
+    s.topics.forEach(function(tp){
+      var r = el('input', {type:'radio', name:'topic_' + s.id});
+      r.checked = v.topic === tp;
+      r.addEventListener('change', function(){ v.topic = tp; saveDraft(); });
+      t.appendChild(el('label', null, [r, el('span', {text: tp})]));
+    });
+    c.appendChild(t);
+  }
+  if (s.hintsHtml){
+    var d = el('details', null, [el('summary', {text:'Gợi ý viết bài (bấm để mở)'}), el('div', {html: s.hintsHtml})]);
+    c.appendChild(d);
+  }
+  var ta = el('textarea', {cls:'essay zh', placeholder:'Viết đoạn văn của bạn ở đây…'});
+  ta.value = v.text || '';
+  var meter = el('div', {cls:'meter'});
+  var counter = el('div', {cls:'counter'});
+  function upd(){ v.text = ta.value; updateMeter(meter, s, ta.value); updateCounter(counter, s, ta.value); saveDraft(); }
+  ta.addEventListener('input', upd);
+  c.appendChild(el('label', {cls:'lbl', text:'Bài viết của bạn'}));
+  c.appendChild(ta);
+  c.appendChild(counter);
+  c.appendChild(meter);
+  updateMeter(meter, s, ta.value);
+  updateCounter(counter, s, ta.value);
+
+  if (s.checklist && s.checklist.length){
+    var ck = el('div', {cls:'checks'}, [el('div', {cls:'lbl', text:'Tự kiểm tra trước khi nộp'})]);
+    s.checklist.forEach(function(item, i){
+      var b = el('input', {type:'checkbox'});
+      b.checked = !!(v.checklist && v.checklist[i]);
+      b.addEventListener('change', function(){ v.checklist = v.checklist || []; v.checklist[i] = b.checked; saveDraft(); });
+      ck.appendChild(el('label', null, [b, el('span', {cls:'zh', text: item})]));
+    });
+    c.appendChild(ck);
+  }
+  return c;
+}
+
+function analyze(text){
+  var chk = (state.asg && state.asg.check) || {};
+  var used = (chk.words || []).filter(function(w){ return text.indexOf(w) >= 0; });
+  var gram = (chk.grammar || []).map(function(g){
+    var ok = false; try { ok = new RegExp(g.re).test(text); } catch(e){}
+    return {label: g.label, ok: ok};
+  });
+  return {chars: countCJK(text), used: used, gram: gram};
+}
+
+function updateMeter(meter, s, text){
+  var r = analyze(text), chk = state.asg.check || {};
+  meter.innerHTML = '';
+  if (chk.words && chk.words.length){
+    var need = chk.minWords || 0;
+    meter.appendChild(el('span', {cls:'pill ' + (r.used.length >= need ? 'ok' : ''), text: 'Từ của bài: ' + r.used.length + (need ? ' / ' + need : '')}));
+  }
+  r.gram.forEach(function(g){ meter.appendChild(el('span', {cls:'pill zh ' + (g.ok ? 'ok' : ''), text: (g.ok ? '✓ ' : '○ ') + g.label})); });
+}
+
+/* Bộ đếm chữ: đếm chữ Hán, không tính dấu câu, chữ cái, số và khoảng trắng. */
+function updateCounter(box, s, text){
+  var n = countCJK(text), min = s.minChars || 0, ok = !min || n >= min;
+  box.className = 'counter' + (ok ? ' ok' : '');
+  box.innerHTML = '';
+  box.appendChild(el('div', null, [
+    el('span', {cls:'num', text: String(n)}),
+    el('span', {text: min ? ' / ' + min + ' chữ' : ' chữ'}),
+    el('span', {text: min ? (ok ? '  ·  Đã đủ số chữ tối thiểu' : '  ·  Còn thiếu ' + (min - n) + ' chữ') : ''})
+  ]));
+  if (min){
+    var tr = el('div', {cls:'track'}, [el('div', {cls:'fill'})]);
+    tr.firstChild.style.width = Math.min(100, Math.round(n / min * 100)) + '%';
+    box.appendChild(tr);
+  }
+  var bc = $('barCount');
+  bc.classList.remove('hidden');
+  bc.className = ok ? 'ok' : '';
+  bc.textContent = 'Đoạn văn: ' + n + (min ? '/' + min : '') + ' chữ';
+}
+
+/* ---------- Nộp bài ---------- */
+function emptyItems(){
+  var miss = [];
+  (state.asg.sections || []).forEach(function(s){
+    if (s.type === 'essay'){
+      var v = state.answers[s.id] || {};
+      if (!String(v.text || '').trim()) miss.push(s.title);
+      return;
+    }
+    var blank = (s.items || []).filter(function(it){
+      var v = state.answers[it.id];
+      if (it.type === 'word_sentence') return !v || !String(v.sentence || '').trim();
+      return !String(v || '').trim();
+    }).length;
+    if (blank) miss.push(s.title + ' (còn ' + blank + ' câu trống)');
+  });
+  return miss;
+}
+
+function modal(html, buttons){
+  var box = $('modalBox'); box.innerHTML = html;
+  var act = el('div', {cls:'actions'});
+  buttons.forEach(function(b){
+    var x = el('button', {cls:'btn' + (b.ghost ? ' ghost' : ''), type:'button', text: b.text});
+    x.addEventListener('click', b.on); act.appendChild(x);
+  });
+  box.appendChild(act);
+  $('modal').classList.remove('hidden');
+}
+function closeModal(){ $('modal').classList.add('hidden'); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+$('submitBtn').addEventListener('click', function(){
+  var name = $('name').value.trim(), a = state.asg;
+  var essay = (a.sections || []).filter(function(s){ return s.type === 'essay'; })[0];
+  if (essay){
+    var t = (state.answers[essay.id] || {}).text || '';
+    var n = countCJK(t);
+    if (essay.minChars && n < essay.minChars){
+      modal('<h2>Đoạn văn chưa đủ chữ</h2><p>Bài viết mới có <b>' + n + '</b> chữ, cần ít nhất <b>' + essay.minChars + '</b> chữ.</p>', [{text:'Viết tiếp', on: closeModal}]);
+      return;
+    }
+  }
+  $('submitBtn').disabled = true;
+  call('checkSubmitted', a.id, name).then(function(st){
+    $('submitBtn').disabled = false;
+    var miss = emptyItems();
+    var html = '<h2>Nộp bài?</h2><p>Tên: <b class="zh">' + esc(name) + '</b></p>';
+    if (st.submitted) html += '<p class="err">Bạn đã nộp bài này rồi. Nộp lại sẽ thay bài cũ.</p>';
+    if (miss.length) html += '<p>Còn phần chưa làm:</p><ul>' + miss.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>';
+    modal(html, [{text:'Xem lại', ghost:true, on: closeModal}, {text: st.submitted ? 'Nộp lại' : 'Nộp bài', on: doSubmit}]);
+  }).catch(function(e){ $('submitBtn').disabled = false; alert('Lỗi kết nối: ' + errMsg(e)); });
+});
+
+function doSubmit(){
+  var name = $('name').value.trim(), a = state.asg;
+  $('modalBox').innerHTML = '<p><span class="spinner"></span> Đang nộp bài…</p>';
+  call('submit', a.id, name, state.answers).then(function(r){
+    closeModal();
+    $('doneTitle').textContent = r.resubmitted ? 'Đã nộp lại bài' : 'Đã nộp bài';
+    $('doneText').textContent = name + ' · ' + a.title + '. Bài làm vẫn được giữ trên máy này nếu bạn muốn sửa và nộp lại.';
+    show('vDone');
+  }).catch(function(e){
+    var m = errMsg(e), closed = /hết thời gian|chưa mở/.test(m);
+    modal('<h2>Chưa nộp được</h2><p class="err">' + esc(m) + '</p><p class="small muted">Bài làm của bạn vẫn còn trên máy.' + (closed ? ' Hãy liên hệ giáo viên.' : ' Hãy thử lại.') + '</p>', [{text:'Đóng', on: closeModal}]);
+  });
+}
+
+setInterval(function(){
+  var d = $('deadline');
+  if (d && state.asg && state.asg.until && !$('vWork').classList.contains('hidden')) d.textContent = deadlineText(state.asg.until);
+}, 30000);
+
+$('back').addEventListener('click', function(){ show('vHome'); loadList(); });
+$('doneBack').addEventListener('click', function(){ show('vHome'); loadList(); });
+$('modal').addEventListener('click', function(e){ if (e.target === $('modal')) closeModal(); });
+
+loadList();
+</script>
+</body>
+</html>
