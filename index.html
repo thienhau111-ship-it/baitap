@@ -3,126 +3,201 @@
 <head>
 <title>中文作業</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14305a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --brand:"LXGW WenKai TC","Kaiti TC","BiauKai","DFKai-SB","標楷體","Noto Serif TC",serif;
-    --bg:#f1f4f9; --card:#ffffff; --ink:#1a2333; --muted:#5d6878; --line:#d9e1ec;
-    --navy:#14305a; --accent:#1f4e8c; --accent-2:#5b8fd0; --accent-ink:#ffffff; --soft:#e8eff9;
-    --ok:#2f7d4f; --ok-soft:#e6f3ea; --warn:#9a6200; --warn-soft:#fff3d6; --danger:#b3261e; --radius:12px;
-    --serif:Georgia,"Noto Serif TC","PMingLiU","Times New Roman",serif;
+    --brand:"LXGW WenKai TC","Kaiti TC","BiauKai","DFKai-SB","標楷體",serif;
+    --bg:#eef2f8; --card:#ffffff; --ink:#172235; --muted:#5b6779; --line:#d8e0eb;
+    --navy:#14305a; --accent:#1f56a3; --accent-2:#5b8fd0; --soft:#e7eef9;
+    --ok:#22744a; --ok-soft:#e3f2e9; --warn:#985f00; --warn-soft:#fff2d4; --danger:#b3261e; --danger-soft:#fbe9e7;
+    --grade:#5a3fb0; --grade-soft:#efeafc;
     --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif;
+    --r:14px;
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Segoe UI",Roboto,"Noto Sans",var(--zh),sans-serif;}
-  .wrap{max-width:720px;margin:0 auto;padding:16px 16px 120px}
-  .mast{background:var(--navy);color:#fff;border-bottom:3px solid var(--accent-2)}
-  header{padding:16px;max-width:720px;margin:0 auto}
-  header h1{margin:0;font:700 30px/1.2 var(--brand);letter-spacing:4px}
-  header p{margin:3px 0 0;color:#c4d3ea;font-size:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:14px 0;box-shadow:0 1px 2px rgba(20,48,90,.05)}
-  h2{font:600 18px/1.35 var(--serif);color:var(--navy);margin:0 0 8px}
-  .deadline{display:inline-block;font-size:14px;color:var(--accent);background:var(--soft);border-radius:8px;padding:3px 10px;margin-top:4px}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Segoe UI",Roboto,"Noto Sans",var(--zh),sans-serif}
+  .zh{font-family:var(--zh)}
+  .hidden{display:none!important}
+  .muted{color:var(--muted)} .small{font-size:14px} .center{text-align:center}
+  .err{color:var(--danger);font-weight:600}
+
+  /* Thanh tiêu đề */
+  .mast{background:var(--navy);color:#fff;padding-top:env(safe-area-inset-top)}
+  .mast .in{max-width:680px;margin:0 auto;padding:14px 16px 12px;display:flex;align-items:center;gap:12px}
+  .mast h1{margin:0;font:700 28px/1.1 var(--brand);letter-spacing:4px}
+  .mast .who{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:14px;min-width:0}
+  .mast .who b{font-family:var(--zh);font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mast .who button{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+  .mast::after{content:"";display:block;height:4px;background:linear-gradient(90deg,var(--accent-2),#9cc0ec)}
+
+  .wrap{max-width:680px;margin:0 auto;padding:14px 14px calc(110px + env(safe-area-inset-bottom))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0;box-shadow:0 1px 2px rgba(20,48,90,.05)}
+  h2{font-size:19px;line-height:1.35;color:var(--navy);margin:0 0 8px}
+  h3{font-size:17px;color:var(--navy);margin:0 0 6px}
+
+  /* Nút và ô nhập */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:999px;padding:13px 20px;font:inherit;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;min-height:48px}
+  .btn.block{width:100%}
+  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+  .btn.ok{background:var(--ok)}
+  .btn:disabled{opacity:.55;cursor:default}
+  .back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font:inherit;font-weight:700;padding:8px 2px;cursor:pointer}
+  label.lbl{display:block;font-weight:700;margin:14px 0 6px}
+  input[type=text],textarea{width:100%;font:inherit;font-family:var(--zh),inherit;font-size:17px;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);-webkit-appearance:none}
+  input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
+  textarea{min-height:96px;resize:vertical}
+  textarea.essay{min-height:280px;line-height:1.85}
+  .hint{color:var(--muted);font-size:14px;margin:6px 0 0}
+
+  /* Đăng nhập */
+  .login h2{font-size:22px}
+  .login input{font-size:22px;text-align:center;letter-spacing:2px;padding:14px}
+  .login .btn{margin-top:12px}
+
+  /* Trang chủ */
+  .hello{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:6px 2px 2px}
+  .hello b{font:700 24px var(--zh);color:var(--navy)}
+  .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
+  .stat b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+  .stat span{font-size:13px;color:var(--muted)}
+  .stat.todo b{color:var(--accent)} .stat.sub b{color:var(--warn)} .stat.gr b{color:var(--grade)}
+  .asg{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-left:6px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin:10px 0;font:inherit;color:inherit;cursor:pointer}
+  .asg:active{transform:scale(.99)}
+  .asg .t{font-weight:700;font-size:17px;line-height:1.35}
+  .asg .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:8px;font-size:14px;color:var(--muted)}
+  .asg .go{display:block;margin-top:8px;font-weight:700;color:var(--accent);font-size:15px}
+  .asg.todo{border-left-color:var(--accent)}
+  .asg.submitted{border-left-color:#e2a72e}
+  .asg.graded{border-left-color:var(--grade)}
+  .asg.missed{border-left-color:#c4ccd8;opacity:.8}
+  .chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+  .chip.todo{background:var(--soft);color:var(--accent)}
+  .chip.submitted{background:var(--warn-soft);color:var(--warn)}
+  .chip.graded{background:var(--grade-soft);color:var(--grade)}
+  .chip.missed{background:#eef1f5;color:var(--muted)}
+  .chip.draft{background:#fff;border:1px dashed var(--accent);color:var(--accent);font-weight:600}
+
+  /* Làm bài */
+  .deadline{display:inline-block;font-size:14px;color:var(--accent);background:var(--soft);border-radius:8px;padding:3px 10px;margin-top:2px}
+  .notice{border-radius:12px;padding:12px 14px;margin:12px 0;font-size:15px;line-height:1.5}
+  .notice.info{background:var(--soft);color:#173f74}
+  .notice.warn{background:var(--warn-soft);color:#6d4500}
+  .notice.ok{background:var(--ok-soft);color:#165234}
+  .item{margin:16px 0 4px}
+  .item .q{font-weight:600}
+  .tag{display:inline-block;font-family:var(--zh);font-weight:700;background:var(--soft);color:var(--accent);border-radius:8px;padding:1px 8px;margin-right:6px}
+  .example{border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;background:#f5f8fd;border-radius:0 8px 8px 0;font-size:15px}
+  .instr{font-size:15px} .instr ol{margin:6px 0;padding-left:22px} .instr p{margin:6px 0}
+  .ws{display:flex;gap:8px;margin-top:6px}
+  .ws input:first-child{flex:0 0 96px}
+  .ws input:last-child{flex:1;min-width:0}
+  details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:12px 0;background:#fbfcfe}
+  details summary{cursor:pointer;font-weight:700;color:var(--accent)}
+  details .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  details table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px;min-width:420px}
+  details th,details td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;font-family:var(--zh),inherit}
+  details th{background:#e8eff9;color:var(--navy)}
+  .topics label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;margin:6px 0;cursor:pointer}
+  .topics input{margin-top:4px;width:18px;height:18px;flex:none}
+  .checks label{display:flex;gap:10px;align-items:center;margin:6px 0}
+  .checks input{width:20px;height:20px;flex:none}
   .counter{margin:10px 0 4px;padding:10px 12px;border-radius:10px;background:var(--warn-soft);color:var(--warn)}
   .counter.ok{background:var(--ok-soft);color:var(--ok)}
   .counter .num{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
   .counter .track{height:6px;border-radius:99px;background:rgba(0,0,0,.08);margin-top:6px;overflow:hidden}
   .counter .fill{height:100%;background:currentColor;border-radius:99px;transition:width .2s}
-  .done-tag{display:inline-block;margin-top:4px;font-size:13px;font-weight:600;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:2px 10px}
-  #barCount{display:block;font-weight:600;color:var(--warn)}
-  #barCount.ok{color:var(--ok)}
-  .ws{display:flex;gap:8px}
-  .ws input:first-child{flex:0 0 110px}
-  .ws input:last-child{flex:1;min-width:0}
-  label.lbl{display:block;font-weight:600;margin:12px 0 6px}
-  input[type=text],textarea{width:100%;font:inherit;font-family:var(--zh),inherit;font-size:17px;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
-  input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
-  textarea{min-height:90px;resize:vertical}
-  textarea.essay{min-height:260px;line-height:1.8}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:999px;padding:12px 20px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
-  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-  .btn:disabled{opacity:.5;cursor:default}
-  .asg{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;margin:8px 0;font:inherit;cursor:pointer}
-  .asg:hover{border-color:var(--accent)}
-  .asg small{color:var(--muted)}
-  .muted{color:var(--muted)} .small{font-size:14px}
-  .intro{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:15px}
-  .item{margin:14px 0 4px}
-  .item .q{font-weight:600}
-  .tag{display:inline-block;font-family:var(--zh);font-weight:700;background:var(--soft);color:var(--accent);border-radius:8px;padding:1px 8px;margin-right:6px}
-  .hint{color:var(--muted);font-size:14px}
-  .example{border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;background:#f6f9fd;border-radius:0 8px 8px 0;font-size:15px}
-  .zh{font-family:var(--zh)}
-  .instr ol{margin:6px 0;padding-left:22px} .instr p{margin:6px 0}
-  details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fbfcfe}
-  details summary{cursor:pointer;font-weight:600;color:var(--accent)}
-  details table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
-  details th,details td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;font-family:var(--zh),inherit}
-  details th{background:#e8eff9;color:var(--navy)}
-  .topics label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;margin:6px 0;cursor:pointer}
-  .topics input{margin-top:4px}
-  .checks label{display:flex;gap:8px;align-items:center;margin:4px 0}
-  .meter{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .meter{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
   .pill{font-size:13px;border-radius:999px;padding:3px 10px;background:#eef1f5;color:var(--muted)}
   .pill.ok{background:var(--ok-soft);color:var(--ok)}
-  .pill.warn{background:var(--warn-soft);color:var(--warn)}
-  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
-  .bar .in{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .modal{position:fixed;inset:0;background:rgba(20,20,20,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
-  .modal .box{background:#fff;border-radius:16px;padding:18px;max-width:440px;width:100%}
+
+  /* Xem lại bài và nhận xét */
+  .scorebox{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#5a3fb0,#7f63d6);color:#fff;border:0}
+  .scorebox .sc{font:800 44px/1 -apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+  .scorebox .sc small{font-size:16px;font-weight:600;opacity:.9;margin-left:2px}
+  .scorebox .tx{font-size:14px;line-height:1.45;opacity:.95}
+  .fbAll{white-space:pre-wrap;word-break:break-word;font-family:var(--zh),inherit;font-size:16px;line-height:1.65}
+  .rv{padding:12px 0;border-bottom:1px dashed #e1e7f0}
+  .rv:last-child{border-bottom:0}
+  .rv .q{font-weight:600;font-size:15px}
+  .rv .mine{margin-top:6px;background:#f6f8fc;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-family:var(--zh);font-size:18px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+  .rv .mine.empty{color:#9aa3b2;font-size:15px;font-style:italic}
+  .rv .key{margin-top:6px;font-size:15px;color:var(--ok);font-family:var(--zh),inherit;word-break:break-word}
+  .rv .key b{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:13px}
+  .fb{margin-top:8px;border-left:4px solid var(--grade);background:var(--grade-soft);border-radius:0 10px 10px 0;padding:8px 12px}
+  .fb .h{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--grade)}
+  .fb .tx{white-space:pre-wrap;word-break:break-word;font-family:var(--zh),inherit;font-size:16px;line-height:1.6;color:#2b1f52}
+  .essayView{white-space:pre-wrap;word-break:break-word;font-family:var(--zh);font-size:18px;line-height:1.9;background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:8px}
+
+  /* Thanh nộp bài */
+  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 16px -12px rgba(0,0,0,.3)}
+  .bar .in{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .bar .st{font-size:13px;color:var(--muted);line-height:1.35;min-width:0}
+  #barCount{display:block;font-weight:700;color:var(--warn)} #barCount.ok{color:var(--ok)}
+  .bar .btn{flex:none}
+
+  .modal{position:fixed;inset:0;background:rgba(15,20,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:10}
+  .modal .box{background:#fff;border-radius:18px 18px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:520px;max-height:88vh;overflow:auto}
+  @media (min-width:600px){.modal{align-items:center;padding:16px}.modal .box{border-radius:18px}}
   .modal ul{padding-left:20px;margin:8px 0}
-  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
-  .err{color:var(--danger);font-weight:600}
-  .center{text-align:center}
-  .big{font-size:44px;line-height:1}
-  .hidden{display:none!important}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+  .actions .btn{flex:1 1 140px}
+  .big{font-size:52px;line-height:1;color:var(--ok)}
   .spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite;display:inline-block;vertical-align:middle}
   @keyframes sp{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="mast"><header>
+<div class="mast"><div class="in">
   <h1>中文作業</h1>
-  <p id="sub">Làm bài và nộp ngay trên điện thoại</p>
-</header></div>
-<div class="wrap">
+  <div class="who hidden" id="who"><b id="whoName"></b><button type="button" id="switchBtn">Đổi tên</button></div>
+</div></div>
 
-  <!-- Màn hình 1: tên + chọn bài -->
-  <section id="vHome">
-    <div class="card">
-      <label class="lbl" for="name">Tên tiếng Trung của bạn</label>
-      <input id="name" type="text" class="zh" placeholder="例如：陳月美" maxlength="30" autocomplete="off">
-      <p class="hint">Gõ đúng tên tiếng Trung, lần sau nộp bài khác cũng gõ giống hệt như vậy.</p>
-    </div>
-    <div class="card">
-      <h2>Chọn bài tập</h2>
-      <div id="asgList"><span class="spinner"></span> <span class="muted">Đang tải…</span></div>
+<div class="wrap">
+  <!-- Đăng nhập bằng tên -->
+  <section id="vLogin" class="hidden">
+    <div class="card login center">
+      <h2>Bạn là ai?</h2>
+      <p class="muted small">Gõ đúng tên tiếng Trung của bạn trong danh sách lớp (chữ phồn thể, đủ họ tên).</p>
+      <input id="name" type="text" class="zh" placeholder="例如：阮氏雲" maxlength="30" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="btn block" id="loginBtn" type="button">Vào lớp</button>
+      <p id="loginErr" class="err small"></p>
     </div>
   </section>
 
-  <!-- Màn hình 2: làm bài -->
+  <!-- Danh sách bài tập -->
+  <section id="vHome" class="hidden">
+    <div class="hello"><span class="muted">你好，</span><b id="helloName"></b></div>
+    <div class="stats" id="stats"></div>
+    <div id="asgList"></div>
+    <p class="hint center">Bài đã nộp vẫn sửa được cho đến khi giáo viên chấm hoặc hết hạn.</p>
+  </section>
+
+  <!-- Làm bài / xem bài -->
   <section id="vWork" class="hidden">
-    <button class="btn ghost" id="back" type="button">← Chọn bài khác</button>
+    <button class="back" id="back" type="button">← Danh sách bài tập</button>
     <div id="form"></div>
   </section>
 
-  <!-- Màn hình 3: đã nộp -->
+  <!-- Đã nộp -->
   <section id="vDone" class="hidden">
     <div class="card center">
       <div class="big">✓</div>
       <h2 id="doneTitle">Đã nộp bài</h2>
       <p id="doneText" class="muted"></p>
-      <button class="btn ghost" id="doneBack" type="button">Về trang chọn bài</button>
+      <button class="btn block" id="doneBack" type="button">Về danh sách bài tập</button>
     </div>
   </section>
 </div>
 
 <div class="bar hidden" id="bar">
   <div class="in">
-    <span class="small muted"><span id="barCount" class="hidden"></span><span id="saveState">Bài làm tự lưu trên máy này</span></span>
+    <span class="st"><span id="barCount" class="hidden"></span><span id="saveState">Bài làm tự lưu trên máy này</span></span>
     <button class="btn" id="submitBtn" type="button">Nộp bài</button>
   </div>
 </div>
@@ -130,7 +205,7 @@
 <div class="modal hidden" id="modal"><div class="box" id="modalBox"></div></div>
 
 <script>
-var state = { asg: null, answers: {} };
+var state = { name: '', asg: null, sub: null, keys: {}, answers: {}, list: [] };
 var CJK = /[㐀-鿿豈-﫿]/g;
 
 function $(id){ return document.getElementById(id); }
@@ -142,10 +217,10 @@ function el(tag, attrs, kids){
     else if (k === 'cls') e.className = attrs[k];
     else e.setAttribute(k, attrs[k]);
   });
-  (kids || []).forEach(function(c){ if (c) e.appendChild(c); });
+  (kids || []).forEach(function(c){ if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
   return e;
 }
-function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(e){ return null; } }
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){ return null; } }
 /* Link ứng dụng web Google Apps Script (kết thúc bằng /exec). */
 var API_URL = 'https://script.google.com/macros/s/AKfycbymAWR4KKSw85EuveT87cVmqYRevrIdrY7ozV1jr4jJDMTuVa8FOSfbUQWA3OhQasyF/exec';
 function call(fn){
@@ -166,10 +241,11 @@ function call(fn){
     return res.data;
   });
 }
-function errMsg(e){ return (e && e.message) ? e.message.replace(/^Exception:\s*/, '') : String(e); }
-function show(v){ ['vHome','vWork','vDone'].forEach(function(x){ $(x).classList.toggle('hidden', x !== v); }); $('bar').classList.toggle('hidden', v !== 'vWork'); window.scrollTo(0,0); }
+function errMsg(e){ return (e && e.message) ? e.message.replace(/^Exception:\s*/, '').replace(/^Error:\s*/, '') : String(e); }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function show(v){ ['vLogin','vHome','vWork','vDone'].forEach(function(x){ $(x).classList.toggle('hidden', x !== v); }); $('bar').classList.add('hidden'); window.scrollTo(0,0); }
 function countCJK(s){ return (String(s || '').match(CJK) || []).length; }
-function fmtTime(iso){ var d = new Date(iso); return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+' ngày '+('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2); }
+function fmtTime(iso){ if (!iso) return ''; var d = new Date(iso); return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+' ngày '+('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2); }
 function remain(iso){
   var ms = new Date(iso) - new Date();
   if (ms <= 0) return 'đã hết giờ';
@@ -179,115 +255,149 @@ function remain(iso){
   return 'còn ' + mm + ' phút';
 }
 function deadlineText(iso){ return iso ? 'Hạn nộp: ' + fmtTime(iso) + ' (' + remain(iso) + ')' : ''; }
+function draftKey(id){ return 'hw:' + state.name + ':' + id; }
+function getDraft(id){ try { return JSON.parse(store(draftKey(id)) || 'null'); } catch(e){ return null; } }
 
-/* ---------- Trang chủ ---------- */
-$('name').value = store('hw_name') || '';
-var nameTimer;
-$('name').addEventListener('input', function(){
-  store('hw_name', $('name').value.trim());
-  clearTimeout(nameTimer); nameTimer = setTimeout(loadList, 700);
-});
+/* ---------- Đăng nhập bằng tên ---------- */
+function setUser(name){
+  state.name = name; store('hw_name', name);
+  $('whoName').textContent = name; $('helloName').textContent = name;
+  $('who').classList.remove('hidden');
+}
+function login(name, silent){
+  name = String(name || '').replace(/\s+/g, '');
+  if (!name){ $('loginErr').textContent = 'Bạn hãy nhập tên tiếng Trung.'; return; }
+  $('loginBtn').disabled = true; $('loginErr').textContent = '';
+  call('checkStudent', name).then(function(r){
+    $('loginBtn').disabled = false; setUser(r.name); goHome();
+  }).catch(function(e){
+    $('loginBtn').disabled = false;
+    if (silent){ store('hw_name', null); showLogin(); }
+    $('loginErr').textContent = errMsg(e);
+  });
+}
+function showLogin(){ $('who').classList.add('hidden'); show('vLogin'); $('name').value = ''; setTimeout(function(){ $('name').focus(); }, 50); }
+$('loginBtn').addEventListener('click', function(){ login($('name').value); });
+$('name').addEventListener('keydown', function(e){ if (e.key === 'Enter') login($('name').value); });
+$('switchBtn').addEventListener('click', function(){ store('hw_name', null); state.name = ''; showLogin(); });
 
-function loadList(){
-  call('getOpenAssignments', $('name').value.trim()).then(function(list){
+/* ---------- Danh sách bài tập ---------- */
+var STATUS = {
+  todo:      { chip: 'Chưa làm',            go: 'Làm bài →' },
+  submitted: { chip: '✓ Đã nộp · chờ chấm', go: 'Xem và sửa bài →' },
+  graded:    { chip: '★ Đã chấm',           go: 'Xem điểm và nhận xét →' },
+  missed:    { chip: 'Hết hạn · chưa nộp',  go: '' }
+};
+function goHome(){
+  show('vHome');
+  $('asgList').innerHTML = '<div class="card"><span class="spinner"></span> <span class="muted">Đang tải bài tập…</span></div>';
+  $('stats').innerHTML = '';
+  call('getMyAssignments', state.name).then(function(list){
+    state.list = list;
+    var n = function(st){ return list.filter(function(a){ return a.status === st; }).length; };
+    $('stats').innerHTML = '';
+    [['todo', n('todo'), 'Chưa làm'], ['sub', n('submitted'), 'Chờ chấm'], ['gr', n('graded'), 'Đã chấm']].forEach(function(x){
+      $('stats').appendChild(el('div', {cls:'stat ' + x[0]}, [el('b', {text: String(x[1])}), el('span', {text: x[2]})]));
+    });
     var box = $('asgList'); box.innerHTML = '';
-    if (!list.length){ box.appendChild(el('p', {cls:'muted', text:'Hiện chưa có bài tập nào đang mở.'})); return; }
-    list.forEach(function(a){
-      var hasDraft = !a.submittedAt && !!store('draft:' + a.id);
-      var b = el('button', {cls:'asg', type:'button'}, [
-        el('div', {text: a.title}),
-        a.until ? el('small', {text: deadlineText(a.until)}) : null,
-        a.until && hasDraft ? el('br') : null,
-        hasDraft ? el('small', {text:'Bạn đang có bài làm dở'}) : null,
-        a.submittedAt ? el('div', null, [el('span', {cls:'done-tag', text:'✓ Đã nộp lúc ' + fmtTime(a.submittedAt)})]) : null
+    if (!list.length){ box.appendChild(el('div', {cls:'card muted center', text:'Hiện chưa có bài tập nào.'})); return; }
+    var order = {todo:0, submitted:1, graded:2, missed:3};
+    list.slice().sort(function(a, b){ return order[a.status] - order[b.status]; }).forEach(function(a){
+      var st = STATUS[a.status], draft = a.status === 'todo' && getDraft(a.id);
+      var meta = el('div', {cls:'meta'}, [
+        el('span', {cls:'chip ' + a.status, text: a.status === 'graded' ? st.chip + ' · ' + a.score + ' điểm' : st.chip}),
+        draft ? el('span', {cls:'chip draft', text:'Có bài làm dở'}) : null,
+        a.submittedAt ? el('span', {text: 'Nộp lúc ' + fmtTime(a.submittedAt)}) : null,
+        a.until && a.active ? el('span', {text: deadlineText(a.until)}) : null,
+        a.status === 'submitted' && !a.active ? el('span', {text:'Đã hết hạn sửa'}) : null
       ]);
-      b.addEventListener('click', function(){ openAsg(a.id); });
+      var b = el('button', {cls:'asg ' + a.status, type:'button'}, [
+        el('div', {cls:'t', text: a.title}), meta,
+        st.go ? el('span', {cls:'go', text: a.status === 'submitted' && !a.active ? 'Xem bài đã nộp →' : st.go}) : null
+      ]);
+      if (a.status === 'missed') b.disabled = true;
+      else b.addEventListener('click', function(){ openAsg(a.id); });
       box.appendChild(b);
     });
-  }).catch(function(e){ $('asgList').innerHTML = ''; $('asgList').appendChild(el('p', {cls:'err', text:'Không tải được danh sách: ' + errMsg(e)})); });
+  }).catch(function(e){
+    var m = errMsg(e);
+    if (/danh sách lớp/.test(m)){ store('hw_name', null); showLogin(); $('loginErr').textContent = m; return; }
+    $('asgList').innerHTML = ''; $('asgList').appendChild(el('div', {cls:'card err', text:'Không tải được bài tập: ' + m}));
+  });
 }
 
+/* ---------- Mở bài ---------- */
 function openAsg(id){
-  if (!$('name').value.trim()){ $('name').focus(); alert('Bạn hãy nhập tên tiếng Trung trước.'); return; }
+  show('vWork');
   $('form').innerHTML = '<div class="card"><span class="spinner"></span> Đang mở bài tập…</div>';
-  show('vWork'); $('bar').classList.add('hidden');
-  Promise.all([call('getAssignment', id), call('checkSubmitted', id, $('name').value.trim())]).then(function(r){
-    state.asg = r[0];
-    try { state.answers = JSON.parse(store('draft:' + id) || '{}') || {}; } catch(e){ state.answers = {}; }
-    if (r[1].submitted) renderAlready(r[1].at); else startWork();
+  call('getMyWork', id, state.name).then(function(r){
+    state.asg = r.asg; state.sub = r.sub; state.keys = r.keys || {};
+    var meta = state.list.filter(function(a){ return a.id === id; })[0];
+    var editable = r.asg.active && !(r.sub && r.sub.returned);
+    if (!editable){ renderReview(); return; }
+    var d = getDraft(id);
+    state.usingDraft = false;
+    if (r.sub){
+      if (d && d.t > Date.parse(r.sub.lastAt)){ state.answers = d.a || {}; state.usingDraft = d.t; }
+      else state.answers = JSON.parse(JSON.stringify(r.sub.answers || {}));
+    } else {
+      state.answers = (d && d.a) || {};
+    }
+    renderForm();
   }).catch(function(e){ $('form').innerHTML = ''; $('form').appendChild(el('div', {cls:'card err', text: errMsg(e)})); });
 }
 
-function startWork(){ $('bar').classList.remove('hidden'); render(); window.scrollTo(0,0); }
-
-/* Đã nộp rồi: báo cho sinh viên, cho phép làm lại (bài nộp trước sẽ bị xóa). */
-function renderAlready(at){
-  var a = state.asg, f = $('form'), name = $('name').value.trim();
-  f.innerHTML = '';
-  var redo = el('button', {cls:'btn', type:'button', text:'Làm bài lại'});
-  var home = el('button', {cls:'btn ghost', type:'button', text:'Về trang chọn bài'});
-  home.addEventListener('click', function(){ show('vHome'); loadList(); });
-  redo.addEventListener('click', function(){
-    modal('<h2>Làm bài lại?</h2><p>Bài bạn đã nộp lúc <b>' + esc(fmtTime(at)) + '</b> sẽ <b>bị xóa</b>. Sau khi làm xong, bạn cần bấm <b>Nộp bài</b> lại.</p>' +
-      (Object.keys(state.answers).length ? '<p class="small muted">Bài làm lần trước vẫn còn trên máy này, bạn có thể sửa tiếp từ đó.</p>' : ''),
-      [{text:'Không', ghost:true, on: closeModal}, {text:'Xóa bài cũ và làm lại', on: function(){
-        $('modalBox').innerHTML = '<p><span class="spinner"></span> Đang xóa bài cũ…</p>';
-        call('deleteMySubmission', a.id, name).then(function(){ closeModal(); startWork(); })
-          .catch(function(e){ modal('<h2>Chưa xóa được</h2><p class="err">' + esc(errMsg(e)) + '</p>', [{text:'Đóng', on: closeModal}]); });
-      }}]);
-  });
-  f.appendChild(el('div', {cls:'card center'}, [
-    el('div', {cls:'big', text:'✓'}),
-    el('h2', {text:'Bạn đã nộp bài này rồi'}),
-    el('p', {cls:'zh', text: name + ' · ' + a.title}),
-    el('p', {cls:'muted', text:'Nộp lúc ' + fmtTime(at) + '.'}),
-    el('div', {cls:'actions', style:'justify-content:center'}, [home, redo])
-  ]));
-}
-
-/* ---------- Làm bài ---------- */
+/* ---------- Làm bài / sửa bài ---------- */
 var saveTimer;
 function saveDraft(){
   clearTimeout(saveTimer);
   $('saveState').textContent = 'Đang lưu nháp…';
   saveTimer = setTimeout(function(){
-    store('draft:' + state.asg.id, JSON.stringify(state.answers));
-    $('saveState').textContent = 'Đã lưu nháp trên máy này';
+    store(draftKey(state.asg.id), JSON.stringify({t: Date.now(), a: state.answers}));
+    $('saveState').textContent = state.sub ? 'Đã lưu nháp · nhớ bấm Cập nhật' : 'Đã lưu nháp trên máy này';
   }, 400);
 }
 
-function render(){
+function renderForm(){
   var a = state.asg, f = $('form');
   f.innerHTML = '';
   f.appendChild(el('div', {cls:'card'}, [
     el('h2', {text: a.title}),
-    a.until ? el('div', {cls:'deadline', id:'deadline', text: deadlineText(a.until)}) : null
+    a.until ? el('div', {cls:'deadline', id:'deadline', text: deadlineText(a.until)}) : null,
+    state.sub ? el('div', {cls:'notice info'}, [
+      el('b', {text:'Bạn đã nộp bài này lúc ' + fmtTime(state.sub.lastAt) + '.'}),
+      document.createTextNode(' Có thể sửa rồi bấm '), el('b', {text:'Cập nhật bài nộp'}),
+      document.createTextNode('. Khi giáo viên chấm xong, bài sẽ bị khóa và bạn sẽ thấy điểm, nhận xét.')
+    ]) : null,
+    state.usingDraft ? el('div', {cls:'notice warn', text:'Đang hiện bản nháp chưa nộp trên máy này (lưu lúc ' + fmtTime(new Date(state.usingDraft).toISOString()) + '). Bấm Cập nhật bài nộp để gửi cho giáo viên.'}) : null
   ]));
-  (a.sections || []).forEach(function(s){
-    f.appendChild(s.type === 'essay' ? renderEssay(s) : renderSection(s));
-  });
+  (a.sections || []).forEach(function(s){ f.appendChild(s.type === 'essay' ? renderEssay(s) : renderSection(s)); });
+  $('submitBtn').textContent = state.sub ? 'Cập nhật bài nộp' : 'Nộp bài';
+  $('saveState').textContent = state.sub ? 'Sửa xong nhớ bấm Cập nhật' : 'Bài làm tự lưu trên máy này';
+  $('bar').classList.remove('hidden');
+  if (!(a.sections || []).some(function(s){ return s.type === 'essay'; })) $('barCount').classList.add('hidden');
+}
+
+function itemHead(s, it, i){
+  return el('div', {cls:'q'}, [
+    it.label ? el('span', {cls:'tag', text: it.label}) : null,
+    document.createTextNode(((s.items.length > 1 && !it.label) ? (i + 1) + '. ' : '') + (it.prompt || ''))
+  ]);
 }
 
 function renderSection(s){
-  var c = el('div', {cls:'card'}, [el('h2', {text: s.title})]);
-  if (s.instructions) c.appendChild(el('div', {cls:'instr small', html: s.instructions}));
-  if (s.example) c.appendChild(el('div', {cls:'example'}, [
-    el('div', {text: 'Ví dụ: ' + s.example.q}), el('div', {cls:'zh', text: '→ ' + s.example.a})
-  ]));
+  var c = el('div', {cls:'card'}, [el('h3', {text: s.title})]);
+  if (s.instructions) c.appendChild(el('div', {cls:'instr', html: s.instructions}));
+  if (s.example) c.appendChild(el('div', {cls:'example'}, [el('div', {text: 'Ví dụ: ' + s.example.q}), el('div', {cls:'zh', text: '→ ' + s.example.a})]));
   (s.items || []).forEach(function(it, i){
-    var head = el('div', {cls:'q'}, [
-      it.label ? el('span', {cls:'tag', text: it.label}) : null,
-      document.createTextNode(((s.items.length > 1 && !it.label) ? (i + 1) + '. ' : '') + (it.prompt || ''))
-    ]);
-    var box = el('div', {cls:'item'}, [head, it.hint ? el('div', {cls:'hint', text: it.hint}) : null]);
+    var box = el('div', {cls:'item'}, [itemHead(s, it, i), it.hint ? el('div', {cls:'hint', text: it.hint}) : null]);
     if (it.type === 'word_sentence'){
       var v = state.answers[it.id] || {};
       var w = el('input', {type:'text', cls:'zh', placeholder:'Từ', maxlength:'10'}); w.value = v.word || '';
       var sn = el('input', {type:'text', cls:'zh', placeholder:'Câu của bạn'}); sn.value = v.sentence || '';
       var upd = function(){ state.answers[it.id] = {word: w.value, sentence: sn.value}; saveDraft(); };
       w.addEventListener('input', upd); sn.addEventListener('input', upd);
-      var ws = el('div', {cls:'ws'}, [w, sn]); ws.style.marginTop = '6px';
-      box.appendChild(ws);
+      box.appendChild(el('div', {cls:'ws'}, [w, sn]));
     } else {
       var inp = it.type === 'textarea' ? el('textarea', {cls:'zh'}) : el('input', {type:'text', cls:'zh'});
       if (it.placeholder) inp.placeholder = it.placeholder;
@@ -303,11 +413,10 @@ function renderSection(s){
 function renderEssay(s){
   var v = state.answers[s.id] || {topic:'', text:'', checklist:[]};
   state.answers[s.id] = v;
-  var c = el('div', {cls:'card'}, [el('h2', {text: s.title})]);
-  if (s.instructions) c.appendChild(el('div', {cls:'instr small', html: s.instructions}));
-
+  var c = el('div', {cls:'card'}, [el('h3', {text: s.title})]);
+  if (s.instructions) c.appendChild(el('div', {cls:'instr', html: s.instructions}));
   if (s.topics && s.topics.length){
-    var t = el('div', {cls:'topics'}, [el('div', {cls:'lbl', text:'Chọn chủ đề'})]);
+    var t = el('div', {cls:'topics'}, [el('label', {cls:'lbl', text:'Chọn chủ đề'})]);
     s.topics.forEach(function(tp){
       var r = el('input', {type:'radio', name:'topic_' + s.id});
       r.checked = v.topic === tp;
@@ -316,25 +425,17 @@ function renderEssay(s){
     });
     c.appendChild(t);
   }
-  if (s.hintsHtml){
-    var d = el('details', null, [el('summary', {text:'Gợi ý viết bài (bấm để mở)'}), el('div', {html: s.hintsHtml})]);
-    c.appendChild(d);
-  }
+  if (s.hintsHtml) c.appendChild(el('details', null, [el('summary', {text:'Gợi ý viết bài (bấm để mở)'}), el('div', {cls:'tw', html: s.hintsHtml})]));
   var ta = el('textarea', {cls:'essay zh', placeholder:'Viết đoạn văn của bạn ở đây…'});
   ta.value = v.text || '';
-  var meter = el('div', {cls:'meter'});
-  var counter = el('div', {cls:'counter'});
-  function upd(){ v.text = ta.value; updateMeter(meter, s, ta.value); updateCounter(counter, s, ta.value); saveDraft(); }
+  var meter = el('div', {cls:'meter'}), counter = el('div', {cls:'counter'});
+  function upd(){ v.text = ta.value; updateMeter(meter, ta.value); updateCounter(counter, s, ta.value); saveDraft(); }
   ta.addEventListener('input', upd);
   c.appendChild(el('label', {cls:'lbl', text:'Bài viết của bạn'}));
-  c.appendChild(ta);
-  c.appendChild(counter);
-  c.appendChild(meter);
-  updateMeter(meter, s, ta.value);
-  updateCounter(counter, s, ta.value);
-
+  c.appendChild(ta); c.appendChild(counter); c.appendChild(meter);
+  updateMeter(meter, ta.value); updateCounter(counter, s, ta.value);
   if (s.checklist && s.checklist.length){
-    var ck = el('div', {cls:'checks'}, [el('div', {cls:'lbl', text:'Tự kiểm tra trước khi nộp'})]);
+    var ck = el('div', {cls:'checks'}, [el('label', {cls:'lbl', text:'Tự kiểm tra trước khi nộp'})]);
     s.checklist.forEach(function(item, i){
       var b = el('input', {type:'checkbox'});
       b.checked = !!(v.checklist && v.checklist[i]);
@@ -349,14 +450,10 @@ function renderEssay(s){
 function analyze(text){
   var chk = (state.asg && state.asg.check) || {};
   var used = (chk.words || []).filter(function(w){ return text.indexOf(w) >= 0; });
-  var gram = (chk.grammar || []).map(function(g){
-    var ok = false; try { ok = new RegExp(g.re).test(text); } catch(e){}
-    return {label: g.label, ok: ok};
-  });
+  var gram = (chk.grammar || []).map(function(g){ var ok = false; try { ok = new RegExp(g.re).test(text); } catch(e){} return {label: g.label, ok: ok}; });
   return {chars: countCJK(text), used: used, gram: gram};
 }
-
-function updateMeter(meter, s, text){
+function updateMeter(meter, text){
   var r = analyze(text), chk = state.asg.check || {};
   meter.innerHTML = '';
   if (chk.words && chk.words.length){
@@ -365,7 +462,6 @@ function updateMeter(meter, s, text){
   }
   r.gram.forEach(function(g){ meter.appendChild(el('span', {cls:'pill zh ' + (g.ok ? 'ok' : ''), text: (g.ok ? '✓ ' : '○ ') + g.label})); });
 }
-
 /* Bộ đếm chữ: đếm chữ Hán, không tính dấu câu, chữ cái, số và khoảng trắng. */
 function updateCounter(box, s, text){
   var n = countCJK(text), min = s.minChars || 0, ok = !min || n >= min;
@@ -374,7 +470,7 @@ function updateCounter(box, s, text){
   box.appendChild(el('div', null, [
     el('span', {cls:'num', text: String(n)}),
     el('span', {text: min ? ' / ' + min + ' chữ' : ' chữ'}),
-    el('span', {text: min ? (ok ? '  ·  Đã đủ số chữ tối thiểu' : '  ·  Còn thiếu ' + (min - n) + ' chữ') : ''})
+    el('span', {text: min ? (ok ? '  ·  Đã đủ số chữ' : '  ·  Còn thiếu ' + (min - n) + ' chữ') : ''})
   ]));
   if (min){
     var tr = el('div', {cls:'track'}, [el('div', {cls:'fill'})]);
@@ -382,20 +478,64 @@ function updateCounter(box, s, text){
     box.appendChild(tr);
   }
   var bc = $('barCount');
-  bc.classList.remove('hidden');
   bc.className = ok ? 'ok' : '';
   bc.textContent = 'Đoạn văn: ' + n + (min ? '/' + min : '') + ' chữ';
+}
+
+/* ---------- Xem bài đã nộp, điểm và nhận xét ---------- */
+function ansText(it, v){
+  if (it.type === 'word_sentence'){ v = v || {}; return (v.word ? '【' + v.word + '】 ' : '') + (v.sentence || ''); }
+  return v == null ? '' : String(v);
+}
+function fbBox(text){
+  if (!String(text || '').trim()) return null;
+  return el('div', {cls:'fb'}, [el('div', {cls:'h', text:'Nhận xét của giáo viên'}), el('div', {cls:'tx', text: text})]);
+}
+function renderReview(){
+  var a = state.asg, sub = state.sub, f = $('form'), graded = sub && sub.returned;
+  var cm = (graded && sub.comments) || {};
+  f.innerHTML = '';
+  var head = el('div', {cls:'card'}, [el('h2', {text: a.title})]);
+  if (!sub) head.appendChild(el('div', {cls:'notice warn', text:'Bạn chưa nộp bài này.'}));
+  else if (graded) head.appendChild(el('div', {cls:'notice ok', text:'Giáo viên đã chấm và trả bài lúc ' + fmtTime(sub.returnedAt) + '. Bài không sửa được nữa.'}));
+  else head.appendChild(el('div', {cls:'notice info', text:'Bạn đã nộp lúc ' + fmtTime(sub.lastAt) + '. ' + (a.active ? '' : 'Bài tập đã hết hạn nên không sửa được nữa. ') + 'Đang chờ giáo viên chấm.'}));
+  f.appendChild(head);
+  if (graded){
+    f.appendChild(el('div', {cls:'card scorebox'}, [
+      el('div', {cls:'sc'}, [document.createTextNode(sub.score || '–'), el('small', {text:'điểm'})]),
+      el('div', {cls:'tx', text: 'Điểm do giáo viên chấm. Xem nhận xét từng câu ở bên dưới.'})
+    ]));
+    if (String(sub.feedback || '').trim()) f.appendChild(el('div', {cls:'card'}, [el('h3', {text:'Nhận xét chung'}), el('div', {cls:'fbAll', text: sub.feedback})]));
+  }
+  if (!sub) return;
+  (a.sections || []).forEach(function(s){
+    var c = el('div', {cls:'card'}, [el('h3', {text: s.title})]);
+    if (s.type === 'essay'){
+      var v = sub.answers[s.id] || {};
+      if (v.topic) c.appendChild(el('div', {cls:'small muted', text:'Chủ đề: ' + v.topic}));
+      c.appendChild(String(v.text || '').trim() ? el('div', {cls:'essayView', text: v.text}) : el('div', {cls:'rv'}, [el('div', {cls:'mine empty', text:'(chưa viết)'})]));
+      c.appendChild(el('div', {cls:'small muted', style:'margin-top:6px', text: countCJK(v.text) + ' chữ'}));
+      var fe = fbBox(cm[s.id]); if (fe) c.appendChild(fe);
+    } else {
+      (s.items || []).forEach(function(it, i){
+        var t = ansText(it, sub.answers[it.id]);
+        c.appendChild(el('div', {cls:'rv'}, [
+          itemHead(s, it, i),
+          el('div', {cls:'mine' + (t.trim() ? '' : ' empty'), text: t.trim() ? t : '(bỏ trống)'}),
+          state.keys[it.id] ? el('div', {cls:'key'}, [el('b', {text:'Đáp án tham khảo: '}), document.createTextNode(state.keys[it.id])]) : null,
+          fbBox(cm[it.id])
+        ]));
+      });
+    }
+    f.appendChild(c);
+  });
 }
 
 /* ---------- Nộp bài ---------- */
 function emptyItems(){
   var miss = [];
   (state.asg.sections || []).forEach(function(s){
-    if (s.type === 'essay'){
-      var v = state.answers[s.id] || {};
-      if (!String(v.text || '').trim()) miss.push(s.title);
-      return;
-    }
+    if (s.type === 'essay'){ if (!String((state.answers[s.id] || {}).text || '').trim()) miss.push(s.title); return; }
     var blank = (s.items || []).filter(function(it){
       var v = state.answers[it.id];
       if (it.type === 'word_sentence') return !v || !String(v.sentence || '').trim();
@@ -405,7 +545,6 @@ function emptyItems(){
   });
   return miss;
 }
-
 function modal(html, buttons){
   var box = $('modalBox'); box.innerHTML = html;
   var act = el('div', {cls:'actions'});
@@ -417,41 +556,36 @@ function modal(html, buttons){
   $('modal').classList.remove('hidden');
 }
 function closeModal(){ $('modal').classList.add('hidden'); }
-function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
 $('submitBtn').addEventListener('click', function(){
-  var name = $('name').value.trim(), a = state.asg;
+  var a = state.asg, upd = !!state.sub;
   var essay = (a.sections || []).filter(function(s){ return s.type === 'essay'; })[0];
   if (essay){
-    var t = (state.answers[essay.id] || {}).text || '';
-    var n = countCJK(t);
+    var n = countCJK((state.answers[essay.id] || {}).text || '');
     if (essay.minChars && n < essay.minChars){
       modal('<h2>Đoạn văn chưa đủ chữ</h2><p>Bài viết mới có <b>' + n + '</b> chữ, cần ít nhất <b>' + essay.minChars + '</b> chữ.</p>', [{text:'Viết tiếp', on: closeModal}]);
       return;
     }
   }
-  $('submitBtn').disabled = true;
-  call('checkSubmitted', a.id, name).then(function(st){
-    $('submitBtn').disabled = false;
-    var miss = emptyItems();
-    var html = '<h2>Nộp bài?</h2><p>Tên: <b class="zh">' + esc(name) + '</b></p>';
-    if (st.submitted) html += '<p class="err">Bạn đã nộp bài này rồi. Nộp lại sẽ thay bài cũ.</p>';
-    if (miss.length) html += '<p>Còn phần chưa làm:</p><ul>' + miss.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>';
-    modal(html, [{text:'Xem lại', ghost:true, on: closeModal}, {text: st.submitted ? 'Nộp lại' : 'Nộp bài', on: doSubmit}]);
-  }).catch(function(e){ $('submitBtn').disabled = false; alert('Lỗi kết nối: ' + errMsg(e)); });
+  var miss = emptyItems();
+  var html = '<h2>' + (upd ? 'Cập nhật bài nộp?' : 'Nộp bài?') + '</h2><p>Tên: <b class="zh">' + esc(state.name) + '</b></p>';
+  if (upd) html += '<p class="small muted">Bài mới sẽ thay bài bạn đã nộp lúc ' + esc(fmtTime(state.sub.lastAt)) + '.</p>';
+  if (miss.length) html += '<p>Còn phần chưa làm:</p><ul>' + miss.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>';
+  modal(html, [{text:'Xem lại', ghost:true, on: closeModal}, {text: upd ? 'Cập nhật' : 'Nộp bài', on: doSubmit}]);
 });
 
 function doSubmit(){
-  var name = $('name').value.trim(), a = state.asg;
-  $('modalBox').innerHTML = '<p><span class="spinner"></span> Đang nộp bài…</p>';
-  call('submit', a.id, name, state.answers).then(function(r){
+  var a = state.asg;
+  $('modalBox').innerHTML = '<p><span class="spinner"></span> Đang gửi bài…</p>';
+  call('submit', a.id, state.name, state.answers).then(function(r){
     closeModal();
-    $('doneTitle').textContent = r.resubmitted ? 'Đã nộp lại bài' : 'Đã nộp bài';
-    $('doneText').textContent = name + ' · ' + a.title + '. Bài làm vẫn được giữ trên máy này nếu bạn muốn sửa và nộp lại.';
+    store(draftKey(a.id), null);
+    $('doneTitle').textContent = r.resubmitted ? 'Đã cập nhật bài nộp' : 'Đã nộp bài';
+    $('doneText').textContent = state.name + ' · ' + a.title + '. Bạn vẫn sửa được cho đến khi giáo viên chấm hoặc hết hạn.';
     show('vDone');
   }).catch(function(e){
-    var m = errMsg(e), closed = /hết thời gian|chưa mở/.test(m);
-    modal('<h2>Chưa nộp được</h2><p class="err">' + esc(m) + '</p><p class="small muted">Bài làm của bạn vẫn còn trên máy.' + (closed ? ' Hãy liên hệ giáo viên.' : ' Hãy thử lại.') + '</p>', [{text:'Đóng', on: closeModal}]);
+    var m = errMsg(e), closed = /hết thời gian|chưa mở|đã chấm/.test(m);
+    modal('<h2>Chưa gửi được</h2><p class="err">' + esc(m) + '</p><p class="small muted">Bài làm của bạn vẫn còn trên máy.' + (closed ? '' : ' Hãy thử lại.') + '</p>', [{text:'Đóng', on: closeModal}]);
   });
 }
 
@@ -460,11 +594,12 @@ setInterval(function(){
   if (d && state.asg && state.asg.until && !$('vWork').classList.contains('hidden')) d.textContent = deadlineText(state.asg.until);
 }, 30000);
 
-$('back').addEventListener('click', function(){ show('vHome'); loadList(); });
-$('doneBack').addEventListener('click', function(){ show('vHome'); loadList(); });
+$('back').addEventListener('click', goHome);
+$('doneBack').addEventListener('click', goHome);
 $('modal').addEventListener('click', function(e){ if (e.target === $('modal')) closeModal(); });
 
-loadList();
+var saved = store('hw_name');
+if (saved){ setUser(saved); goHome(); } else showLogin();
 </script>
 </body>
 </html>
