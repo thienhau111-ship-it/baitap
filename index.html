@@ -92,6 +92,13 @@
   .item{margin:16px 0 4px}
   .item .q{font-weight:600}
   .opts{display:grid;gap:8px;margin-top:8px}
+  .item.miss{border:2px solid #e5484d;border-radius:12px;padding:10px;background:#fff6f6}
+  .item.flash{animation:flashIt 1.2s}
+  @keyframes flashIt{0%,60%{box-shadow:0 0 0 4px #ffb4b6}100%{box-shadow:none}}
+  .missList{display:grid;gap:10px;margin:10px 0 4px;max-height:50vh;overflow:auto}
+  .missT{font-weight:700;font-size:14px;margin-bottom:6px}
+  .missChips{display:flex;flex-wrap:wrap;gap:6px}
+  .missChip{border:1.5px solid #e5484d;background:#fff;color:#c62828;border-radius:999px;padding:5px 12px;font:600 14px inherit;cursor:pointer}
   .opt{position:relative;display:flex;align-items:flex-start;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer;font-family:var(--zh);font-size:18px;line-height:1.5}
   .opt input{position:absolute;opacity:0;pointer-events:none}
   .opt .lt{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:700 14px -apple-system,"Segoe UI",Roboto,sans-serif;color:#6b7686;margin-top:1px}
@@ -408,7 +415,9 @@ function renderSection(s){
   if (s.passage) c.appendChild(el('div', {cls:'passage', text: s.passage}));
   if (s.example) c.appendChild(el('div', {cls:'example'}, [el('div', {text: 'Ví dụ: ' + s.example.q}), el('div', {cls:'zh', text: '→ ' + s.example.a})]));
   (s.items || []).forEach(function(it, i){
-    var box = el('div', {cls:'item'}, [itemHead(s, it, i), it.hint ? el('div', {cls:'hint', text: it.hint}) : null]);
+    var box = el('div', {cls:'item', id:'it_' + it.id}, [itemHead(s, it, i), it.hint ? el('div', {cls:'hint', text: it.hint}) : null]);
+    box.addEventListener('input', function(){ box.classList.remove('miss'); });
+    box.addEventListener('change', function(){ box.classList.remove('miss'); });
     if (it.type === 'word_sentence'){
       var v = state.answers[it.id] || {};
       var w = el('input', {type:'text', cls:'zh', placeholder:'Từ', maxlength:'10'}); w.value = v.word || '';
@@ -445,7 +454,7 @@ function renderSection(s){
 function renderEssay(s){
   var v = state.answers[s.id] || {topic:'', text:'', checklist:[]};
   state.answers[s.id] = v;
-  var c = el('div', {cls:'card'}, [el('h3', {text: s.title})]);
+  var c = el('div', {cls:'card', id:'sec_' + s.id}, [el('h3', {text: s.title})]);
   if (s.instructions) c.appendChild(el('div', {cls:'instr', html: s.instructions}));
   if (s.topics && s.topics.length){
     var t = el('div', {cls:'topics'}, [el('label', {cls:'lbl', text:'Chọn chủ đề'})]);
@@ -573,18 +582,58 @@ function renderReview(){
 }
 
 /* ---------- Nộp bài ---------- */
+// Danh sách câu chưa làm: [{title, nums:[{n, id}], essay}]
 function emptyItems(){
   var miss = [];
   (state.asg.sections || []).forEach(function(s){
-    if (s.type === 'essay'){ if (!String((state.answers[s.id] || {}).text || '').trim()) miss.push(s.title); return; }
-    var blank = (s.items || []).filter(function(it){
+    if (s.type === 'essay'){ if (!String((state.answers[s.id] || {}).text || '').trim()) miss.push({title: s.title, nums: [], essay: s.id}); return; }
+    var nums = [];
+    (s.items || []).forEach(function(it, i){
       var v = state.answers[it.id];
-      if (it.type === 'word_sentence') return !v || !String(v.sentence || '').trim();
-      return !String(v || '').trim();
-    }).length;
-    if (blank) miss.push(s.title + ' (còn ' + blank + ' câu trống)');
+      var blank = it.type === 'word_sentence' ? (!v || !String(v.sentence || '').trim()) : !String(v == null ? '' : v).trim();
+      if (blank) nums.push({n: i + 1, id: it.id});
+    });
+    if (nums.length) miss.push({title: s.title, nums: nums});
   });
   return miss;
+}
+function goToItem(id){
+  closeModal();
+  var x = document.getElementById(id); if (!x) return;
+  x.scrollIntoView({behavior:'smooth', block:'center'});
+  x.classList.remove('flash'); void x.offsetWidth; x.classList.add('flash');
+}
+function showMissing(miss, onSubmitAnyway){
+  var total = miss.reduce(function(t, m){ return t + (m.essay ? 1 : m.nums.length); }, 0);
+  document.querySelectorAll('.item.miss, .card.miss').forEach(function(x){ x.classList.remove('miss'); });
+  miss.forEach(function(m){
+    m.nums.forEach(function(q){ var x = document.getElementById('it_' + q.id); if (x) x.classList.add('miss'); });
+  });
+  var box = $('modalBox'); box.innerHTML = '';
+  box.appendChild(el('h2', {text: '⚠️ Bạn còn ' + total + ' câu chưa làm'}));
+  box.appendChild(el('p', {cls:'small muted', text: 'Bấm vào số câu để đi đến câu đó. Câu chưa làm được viền đỏ.'}));
+  var list = el('div', {cls:'missList'});
+  miss.forEach(function(m){
+    var row = el('div', {cls:'missRow'}, [el('div', {cls:'missT', text: m.title})]);
+    var chips = el('div', {cls:'missChips'});
+    if (m.essay){
+      var b = el('button', {cls:'missChip', type:'button', text:'Chưa viết'});
+      b.addEventListener('click', function(){ goToItem('sec_' + m.essay); }); chips.appendChild(b);
+    }
+    m.nums.forEach(function(q){
+      var b = el('button', {cls:'missChip', type:'button', text:'Câu ' + q.n});
+      b.addEventListener('click', function(){ goToItem('it_' + q.id); }); chips.appendChild(b);
+    });
+    row.appendChild(chips); list.appendChild(row);
+  });
+  box.appendChild(list);
+  var act = el('div', {cls:'actions'});
+  var anyway = el('button', {cls:'btn ghost', type:'button', text:'Vẫn nộp'});
+  var back = el('button', {cls:'btn', type:'button', text:'Làm tiếp'});
+  anyway.addEventListener('click', onSubmitAnyway);
+  back.addEventListener('click', function(){ var f = miss[0]; goToItem(f.essay ? 'sec_' + f.essay : 'it_' + f.nums[0].id); });
+  act.appendChild(anyway); act.appendChild(back); box.appendChild(act);
+  $('modal').classList.remove('hidden');
 }
 function modal(html, buttons){
   var box = $('modalBox'); box.innerHTML = html;
@@ -609,10 +658,13 @@ $('submitBtn').addEventListener('click', function(){
     }
   }
   var miss = emptyItems();
-  var html = '<h2>' + (upd ? 'Cập nhật bài nộp?' : 'Nộp bài?') + '</h2><p>Tên: <b class="zh">' + esc(state.name) + '</b></p>';
-  if (upd) html += '<p class="small muted">Bài mới sẽ thay bài bạn đã nộp lúc ' + esc(fmtTime(state.sub.lastAt)) + '.</p>';
-  if (miss.length) html += '<p>Còn phần chưa làm:</p><ul>' + miss.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>';
-  modal(html, [{text:'Xem lại', ghost:true, on: closeModal}, {text: upd ? 'Cập nhật' : 'Nộp bài', on: doSubmit}]);
+  function confirmSubmit(){
+    var html = '<h2>' + (upd ? 'Cập nhật bài nộp?' : 'Nộp bài?') + '</h2><p>Tên: <b class="zh">' + esc(state.name) + '</b></p>';
+    if (upd) html += '<p class="small muted">Bài mới sẽ thay bài bạn đã nộp lúc ' + esc(fmtTime(state.sub.lastAt)) + '.</p>';
+    if (miss.length) html += '<p class="err small">Bạn vẫn còn câu bỏ trống. Câu bỏ trống sẽ không có điểm.</p>';
+    modal(html, [{text:'Xem lại', ghost:true, on: closeModal}, {text: upd ? 'Cập nhật' : 'Nộp bài', on: doSubmit}]);
+  }
+  if (miss.length) showMissing(miss, confirmSubmit); else confirmSubmit();
 });
 
 function doSubmit(){
@@ -642,6 +694,6 @@ $('modal').addEventListener('click', function(e){ if (e.target === $('modal')) c
 var saved = store('hw_name');
 if (saved){ setUser(saved); goHome(); } else showLogin();
 </script>
-<p style="text-align:center;color:#9aa3b2;font-size:12px;margin:8px 0 90px">Phiên bản 06/11 · có trắc nghiệm</p>
+<p style="text-align:center;color:#9aa3b2;font-size:12px;margin:8px 0 90px">Phiên bản 07/11 · có trắc nghiệm</p>
 </body>
 </html>
