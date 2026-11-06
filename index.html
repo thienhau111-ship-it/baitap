@@ -91,6 +91,15 @@
   .notice.ok{background:var(--ok-soft);color:#165234}
   .item{margin:16px 0 4px}
   .item .q{font-weight:600}
+  .opts{display:grid;gap:8px;margin-top:8px}
+  .opt{position:relative;display:flex;align-items:flex-start;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer;font-family:var(--zh);font-size:18px;line-height:1.5}
+  .opt input{position:absolute;opacity:0;pointer-events:none}
+  .opt .lt{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:700 14px -apple-system,"Segoe UI",Roboto,sans-serif;color:#6b7686;margin-top:1px}
+  .opt.on{border-color:var(--accent);background:var(--soft)}
+  .opt.on .lt{background:var(--accent);border-color:var(--accent);color:#fff}
+  .passage{font-family:var(--zh);font-size:18px;line-height:1.9;background:#fffbef;border:1px solid #f0e2b6;border-radius:12px;padding:12px 14px;margin:8px 0;white-space:pre-wrap}
+  .mk{display:inline-block;margin-left:8px;border-radius:999px;padding:0 8px;font:700 13px/1.7 -apple-system,"Segoe UI",Roboto,sans-serif;vertical-align:middle}
+  .mk.ok{background:#e3f5ea;color:#1d7a4c} .mk.no{background:#fdeaea;color:#c0392b}
   .tag{display:inline-block;font-family:var(--zh);font-weight:700;background:var(--soft);color:var(--accent);border-radius:8px;padding:1px 8px;margin-right:6px}
   .example{border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;background:#f5f8fd;border-radius:0 8px 8px 0;font-size:15px}
   .instr{font-size:15px} .instr ol{margin:6px 0;padding-left:22px} .instr p{margin:6px 0}
@@ -256,7 +265,15 @@ function remain(iso){
 }
 function deadlineText(iso){ return iso ? 'Hạn nộp: ' + fmtTime(iso) + ' (' + remain(iso) + ')' : ''; }
 function draftKey(id){ return 'hw:' + state.name + ':' + id; }
-function getDraft(id){ try { return JSON.parse(store(draftKey(id)) || 'null'); } catch(e){ return null; } }
+function getDraft(id){
+  try {
+    var d = JSON.parse(store(draftKey(id)) || 'null');
+    if (d) return d;
+    var old = JSON.parse(store('draft:' + id) || 'null');   // nháp của bản cũ
+    if (old && typeof old === 'object' && Object.keys(old).length) return {t: 0, a: old};
+  } catch(e){}
+  return null;
+}
 
 /* ---------- Đăng nhập bằng tên ---------- */
 function setUser(name){
@@ -388,6 +405,7 @@ function itemHead(s, it, i){
 function renderSection(s){
   var c = el('div', {cls:'card'}, [el('h3', {text: s.title})]);
   if (s.instructions) c.appendChild(el('div', {cls:'instr', html: s.instructions}));
+  if (s.passage) c.appendChild(el('div', {cls:'passage', text: s.passage}));
   if (s.example) c.appendChild(el('div', {cls:'example'}, [el('div', {text: 'Ví dụ: ' + s.example.q}), el('div', {cls:'zh', text: '→ ' + s.example.a})]));
   (s.items || []).forEach(function(it, i){
     var box = el('div', {cls:'item'}, [itemHead(s, it, i), it.hint ? el('div', {cls:'hint', text: it.hint}) : null]);
@@ -398,6 +416,20 @@ function renderSection(s){
       var upd = function(){ state.answers[it.id] = {word: w.value, sentence: sn.value}; saveDraft(); };
       w.addEventListener('input', upd); sn.addEventListener('input', upd);
       box.appendChild(el('div', {cls:'ws'}, [w, sn]));
+    } else if (it.type === 'choice'){
+      var og = el('div', {cls:'opts'});
+      (it.options || []).forEach(function(o, k){
+        var L = 'ABCDEFGH'.charAt(k);
+        var r = el('input', {type:'radio', name:'opt_' + it.id});
+        var lab = el('label', {cls:'opt' + (state.answers[it.id] === L ? ' on' : '')}, [r, el('span', {cls:'lt', text: L}), el('span', {text: o})]);
+        r.checked = state.answers[it.id] === L;
+        r.addEventListener('change', function(){
+          state.answers[it.id] = L; saveDraft();
+          Array.prototype.forEach.call(og.children, function(x){ x.classList.remove('on'); }); lab.classList.add('on');
+        });
+        og.appendChild(lab);
+      });
+      box.appendChild(og);
     } else {
       var inp = it.type === 'textarea' ? el('textarea', {cls:'zh'}) : el('input', {type:'text', cls:'zh'});
       if (it.placeholder) inp.placeholder = it.placeholder;
@@ -483,8 +515,13 @@ function updateCounter(box, s, text){
 }
 
 /* ---------- Xem bài đã nộp, điểm và nhận xét ---------- */
+function optText(it, L){
+  var k = 'ABCDEFGH'.indexOf(String(L || ''));
+  return k >= 0 && it.options && it.options[k] != null ? L + '. ' + it.options[k] : String(L || '');
+}
 function ansText(it, v){
   if (it.type === 'word_sentence'){ v = v || {}; return (v.word ? '【' + v.word + '】 ' : '') + (v.sentence || ''); }
+  if (it.type === 'choice') return v ? optText(it, v) : '';
   return v == null ? '' : String(v);
 }
 function fbBox(text){
@@ -517,12 +554,16 @@ function renderReview(){
       c.appendChild(el('div', {cls:'small muted', style:'margin-top:6px', text: countCJK(v.text) + ' chữ'}));
       var fe = fbBox(cm[s.id]); if (fe) c.appendChild(fe);
     } else {
+      if (s.passage) c.appendChild(el('div', {cls:'passage', text: s.passage}));
       (s.items || []).forEach(function(it, i){
-        var t = ansText(it, sub.answers[it.id]);
+        var t = ansText(it, sub.answers[it.id]), k = state.keys[it.id];
+        var isCh = it.type === 'choice' && k;
+        var mine = el('div', {cls:'mine' + (t.trim() ? '' : ' empty'), text: t.trim() ? t : '(bỏ trống)'});
+        if (isCh) mine.appendChild(sub.answers[it.id] === k ? el('span', {cls:'mk ok', text:'✓ Đúng'}) : el('span', {cls:'mk no', text:'✗ Sai'}));
         c.appendChild(el('div', {cls:'rv'}, [
           itemHead(s, it, i),
-          el('div', {cls:'mine' + (t.trim() ? '' : ' empty'), text: t.trim() ? t : '(bỏ trống)'}),
-          state.keys[it.id] ? el('div', {cls:'key'}, [el('b', {text:'Đáp án tham khảo: '}), document.createTextNode(state.keys[it.id])]) : null,
+          mine,
+          k && !(isCh && sub.answers[it.id] === k) ? el('div', {cls:'key'}, [el('b', {text: isCh ? 'Đáp án đúng: ' : 'Đáp án tham khảo: '}), document.createTextNode(isCh ? optText(it, k) : k)]) : null,
           fbBox(cm[it.id])
         ]));
       });
@@ -579,7 +620,7 @@ function doSubmit(){
   $('modalBox').innerHTML = '<p><span class="spinner"></span> Đang gửi bài…</p>';
   call('submit', a.id, state.name, state.answers).then(function(r){
     closeModal();
-    store(draftKey(a.id), null);
+    store(draftKey(a.id), null); store('draft:' + a.id, null);
     $('doneTitle').textContent = r.resubmitted ? 'Đã cập nhật bài nộp' : 'Đã nộp bài';
     $('doneText').textContent = state.name + ' · ' + a.title + '. Bạn vẫn sửa được cho đến khi giáo viên chấm hoặc hết hạn.';
     show('vDone');
